@@ -7,7 +7,7 @@ public class StepupClientTransformer extends CallHookInsertionTransformer {
 	public StepupClientTransformer() {
 		super("aroma1997.stepupfix.StepupHooks", true);
 		addClass("net.minecraft.client.entity.EntityPlayerSP");
-		addMethodHook("func_189809_N", "isAutoJumpOn");
+		addMethodHook("func_189809_N", "isAutojumpOn");
 	}
 
 }
