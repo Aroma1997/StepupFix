@@ -11,9 +11,15 @@ import net.minecraft.client.entity.EntityPlayerSP;
  */
 public class StepupHooks {
 
+	/**
+	 * Will be called once a tick.
+	 * @return always false to prevent minecraft of doing their own autojump.
+	 */
 	public static boolean isAutojumpOn(EntityPlayerSP player) {
-		if (Minecraft.getMinecraft().gameSettings.field_189989_R && !player.isSneaking()) {
+		if (Minecraft.getMinecraft().gameSettings.autoJump && !player.isSneaking()) {
 			player.stepHeight = 1.2f;
+
+			//TODO: Stop sprinting, when the player runs into something.
 		} else {
 			player.stepHeight = 0.6f;
 		}
