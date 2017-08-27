@@ -40,8 +40,16 @@ minecraft {
 	makeObfSourceJar = false
 }
 
-dependencies {
+repositories {
+	jcenter()
+	maven {
+		name = "aroma"
+		url = "https://files.aroma1997.org/maven/"
+	}
+}
 
+dependencies {
+	compile "aroma1997.core:Aroma1997Core-${config.mc_version}:+:deobf"
 }
 
 processResources
