@@ -1,23 +1,28 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
+	repositories {
+		jcenter()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+	}
 }
+
+plugins {
+	id "com.matthewprenger.cursegradle" version "1.0.9"
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 ext.configFile = file "build.properties"
 
 configFile.withReader {
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
+	def prop = new Properties()
+	prop.load(it)
+	project.ext.config = new ConfigSlurper().parse prop
 }
 
 version = config.mod_version
@@ -28,10 +33,10 @@ if (System.getenv().BUILD_NUMBER)
 	version = "${config.mod_version}.b${System.getenv().BUILD_NUMBER}"
 
 minecraft {
-    version = "${config.mc_version}-${config.forge_version}"
-    runDir = "run"
+	version = "${config.mc_version}-${config.forge_version}"
+	runDir = "run"
 	
-    mappings = "${config.mcp_version}"
+	mappings = "${config.mcp_version}"
 	makeObfSourceJar = false
 }
 
@@ -41,37 +46,48 @@ dependencies {
 
 processResources
 {
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
 		include '**/reference.properties'
 
-        expand 'version': version, 'mcversion': config.mc_version
-    }
+		expand 'version': version, 'mcversion': config.mc_version
+	}
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
 		exclude '**/reference.properties'
-    }
+	}
 }
 
 jar {
-    manifest {
-        attributes 'FMLCorePlugin': 'aroma1997.stepupfix.StepupfixCore'
-        //attributes 'FMLCorePluginContainsFMLMod': ''
-    }
+	manifest {
+		attributes 'FMLCorePlugin': 'aroma1997.stepupfix.StepupfixCore'
+		//attributes 'FMLCorePluginContainsFMLMod': ''
+	}
 	appendix = config.mc_version
 }	
 
 task deobfJar(type: Jar) {
-    from sourceSets.main.output
+	from sourceSets.main.output
 	manifest {
-        attributes 'FMLCorePlugin': 'aroma1997.stepupfix.StepupfixCore'
-        //attributes 'FMLCorePluginContainsFMLMod': ''
-    }
+		attributes 'FMLCorePlugin': 'aroma1997.stepupfix.StepupfixCore'
+		//attributes 'FMLCorePluginContainsFMLMod': ''
+	}
 	appendix = config.mc_version
-    classifier = 'deobf'
+	classifier = 'deobf'
 }
 
 artifacts {
-        archives deobfJar
+		archives deobfJar
+}
+
+curseforge {
+	apiKey = project.hasProperty('curseforge_apikey') ? project.curseforge_apikey : '0'
+	project {
+		id = config.curse_project_id
+		changelog = "N/A"
+		changelogType = 'html'
+		releaseType = version.contains('b') ? 'beta' : 'release'
+		addArtifact deobfJar
+	}
 }
