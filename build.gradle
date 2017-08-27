@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -31,7 +31,7 @@ minecraft {
     version = "${config.mc_version}-${config.forge_version}"
     runDir = "run"
 	
-    mappings = "snapshot_20161111"
+    mappings = "${config.mcp_version}"
 	makeObfSourceJar = false
 }
 
