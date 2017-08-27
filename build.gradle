@@ -89,5 +89,8 @@ curseforge {
 		changelogType = 'html'
 		releaseType = version.contains('b') ? 'beta' : 'release'
 		addArtifact deobfJar
+		relations {
+			requiredLibrary 'aroma1997core'
+		}
 	}
 }
