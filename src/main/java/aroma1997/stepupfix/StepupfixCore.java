@@ -7,8 +7,8 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 
 /**
  * SortingIndex to make sure, we load after Aroma1997Core
- * @author Aroma1997
  *
+ * @author Aroma1997
  */
 @SortingIndex(100)
 public class StepupfixCore implements IFMLLoadingPlugin {
